@@ -18,8 +18,9 @@ DEFAULT_POKEMON_MANEUVERS = ['Struggle (Physical)', 'Struggle (Special)', 'Grapp
 
 class Foundry(object):
     
-    def __init__(self, version="Version20"):
+    def __init__(self, system_version, version="Version20"):
         self.path_setup(version)
+        self.system_version = system_version
         self.version = version
         self.display_version = "Core 2.0"
 
@@ -331,7 +332,7 @@ class Foundry(object):
                             "flags": {},
                             "_stats": {
                                 "systemId": "pokerole",
-                                "systemVersion": "0.1.0",
+                                "systemVersion": self.system_version,
                                 "coreVersion": "10.291",
                                 "createdTime": 1670952558737,
                                 "modifiedTime": datetime.datetime.now().timestamp(),
@@ -372,7 +373,7 @@ class Foundry(object):
                 "flags": {},
                 "_stats": {
                     "systemId": "pokerole",
-                    "systemVersion": "0.1.0",
+                    "systemVersion": self.system_version,
                     "coreVersion": "10.291",
                     "createdTime": 1670695293664,
                     "modifiedTime": datetime.datetime.now().timestamp(),
@@ -538,7 +539,7 @@ class Foundry(object):
                         "sort": 100001,
                         "_stats": {
                             "systemId": "pokerole",
-                            "systemVersion": "0.1.0",
+                            "systemVersion": self.system_version,
                             "coreVersion": "10.291",
                             "createdTime": 1670525752873,
                             "modifiedTime": datetime.datetime.now().timestamp(),
@@ -572,14 +573,15 @@ class Foundry(object):
         x(self.book_path, self.book_output)
         x(self.shuffle_path, self.shuffle_output)
         
-def update( *argv, 
+def update( *argv,
+            system_version,
             batch=False, 
             version='Version20', 
             confirm=False,
             sheet_images='book',
             token_images='book'):
         
-    foundry = Foundry(version)
+    foundry = Foundry(system_version, version)
     
     targets = {
         "pokedex":   foundry._pokedex,
@@ -617,7 +619,8 @@ def help():
     Python Script to update the Obsidian Foundry with the latest Data. 
     
     update: 
-        update [collection names], [--batch] [--version Version] [--confirm] [--sheet_images src] [--token_images src]
+        update --system_version Version [collection names], [--batch] [--version Version] [--confirm] [--sheet_images src] [--token_images src]
+            system_version       : The target Foundry system version.
             collection names     : one or more of the folders in Foundry. Optional when using --batch.
             batch                : Optional. Updates all Foundry folderss
             version              : Optional. Changes the Version folder to be used in paths.
